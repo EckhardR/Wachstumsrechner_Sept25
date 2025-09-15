@@ -1,0 +1,58 @@
+#version: '3'
+
+services:
+  frontend:
+    build: ./frontend
+    environment:
+      - BACKEND_HOST=${BACKEND_HOST}
+      - BACKEND_PORT=${BACKEND_PORT}
+    ports:
+      - "3000:80"
+    container_name: growthcalculator-frontend-app
+  growthcalculator-mysql-app:
+    image: mysql:8.0
+    build: ./db
+    restart: unless-stopped
+    tty: true
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=growthcalculator
+    container_name: growthcalculator-mysql-app
+    ports:
+      - "${MYSQLDB_LOCAL_PORT}:${DB_PORT}"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - db:/var/lib/mysql
+  backend:
+    build: ./backend
+    restart: always
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    environment:
+      - BACKEND_PORT=${BACKEND_PORT}
+      - DB_HOST=growthcalculator-mysql-app
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - NODE_ENV=production
+    container_name: growthcalculator-backend-app
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    depends_on:
+      - growthcalculator-mysql-app
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_HOST=growthcalculator-mysql-app
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - /sessions
+    container_name: growthcalculator-phpmyadmin-app
+volumes:
+  db:

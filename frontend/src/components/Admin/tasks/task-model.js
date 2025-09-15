@@ -1,0 +1,15 @@
+export type Task = {
+    titel: String,
+    Description: String,
+    art: String,
+    DayOfLife: String,
+    LowerWeekLimit: String,
+    UpperWeekLimit: String,
+    LowerBirthWeight: String,
+    UpperBirthWeight: String,
+    recurringTaskFrequency: String,
+    recurringTaskStartDay: String,
+    taskPostmenstrualFrequency: String,
+    TaskStartPostmenstrualAge: String,
+    CreatedBy: String,
+  }

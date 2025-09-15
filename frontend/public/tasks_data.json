@@ -1,0 +1,24 @@
+[
+  {
+    "type1": [],
+    "type2": [],
+    "type3": []
+  },
+  {
+    "patient_id": 1234,
+    "tasks": {
+      "today": [
+        {
+          "task_id": 1,
+          "task_Title": "Task Title 1",
+          "task_Description": "Das ist die Beschreibung",
+          "task_art": "type1",
+          "creation_date": "2021-06-01",
+          "due_date": "2021-06-01"
+        }
+      ],
+      "upcoming": [],
+      "done": []
+    }
+  }
+]
